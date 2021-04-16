@@ -7,6 +7,8 @@ const initialBoardContent = {
     "card-5": { id: "05", title: "title", desc: "desc" },
     "card-6": { id: "06", title: "title", desc: "desc" },
     "card-7": { id: "07", title: "title", desc: "desc" },
+    "card-8": { id: "08", title: "title", desc: "desc" },
+    "card-9": { id: "09", title: "title", desc: "desc" },
   },
   lists: {
     "list-1": {
@@ -17,12 +19,12 @@ const initialBoardContent = {
     "list-2": {
       id: "list-2",
       title: "title2",
-      cardIds: ["card-5", "card-6", "card-7"],
+      cardIds: ["card-4", "card-5", "card-6"],
     },
     "list-3": {
       id: "list-3",
       title: "title3",
-      cardIds: ["card-3", "card-4", "card-5"],
+      cardIds: ["card-7", "card-8", "card-9"],
     },
   },
   // Reordering of lists
