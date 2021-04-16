@@ -1,5 +1,12 @@
+import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import Card from "./Card";
+
+const CardList = React.memo(function CardList({ cards }) {
+  return cards.map((card, index) => (
+    <Card key={card.id} index={index} data={card} />
+  ));
+});
 
 function List(props) {
   return (
@@ -14,6 +21,7 @@ function List(props) {
           <path d="M5 10a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4z" />
         </svg>
       </div>
+
       <Droppable droppableId={props.list.id}>
         {(provided, snapshot) => (
           <div
@@ -23,13 +31,12 @@ function List(props) {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {props.cards.map((card, index) => (
-              <Card key={card.id} data={card} index={index} />
-            ))}
+            <CardList cards={props.cards} />
             {provided.placeholder}
           </div>
         )}
       </Droppable>
+
       <div className=" text-sm inline-flex w-100 justify-between p-2 text-grey-dark rounded mt-1 cursor-pointer hover:bg-grey-lighter">
         <svg
           xmlns="http://www.w3.org/2000/svg"
