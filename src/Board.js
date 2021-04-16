@@ -1,4 +1,5 @@
 import React from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import initialBoardContent from "./InitialBoardContent";
 import HeaderNav from "./components/HeaderNav";
 import List from "./components/List";
@@ -6,6 +7,9 @@ import List from "./components/List";
 function Board() {
   const [state, setState] = React.useState(initialBoardContent);
 
+  const onDragEnd = (result) => {
+    // TODO: implement
+  };
   return (
     <div className="Board">
       <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -34,13 +38,13 @@ function Board() {
             </div>
           </div>
           <div className="flex px-4 pb-8 items-start overflow-auto">
-            {state.listOrder.map((listId) => {
-              const list = state.lists[listId];
-              const cards = list.cardIds.map((cardId) => state.cards[cardId]);
-              return (
-                <List key={list.id} title={list.title} cards={cards}></List>
-              );
-            })}
+            <DragDropContext onDragEnd={onDragEnd}>
+              {state.listOrder.map((listId) => {
+                const list = state.lists[listId];
+                const cards = list.cardIds.map((cardId) => state.cards[cardId]);
+                return <List key={list.id} list={list} cards={cards}></List>;
+              })}
+            </DragDropContext>
           </div>
         </div>
       </div>

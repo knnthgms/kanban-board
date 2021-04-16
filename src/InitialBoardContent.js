@@ -15,12 +15,12 @@ const initialBoardContent = {
       cardIds: ["card-1", "card-2", "card-3"],
     },
     "list-2": {
-      id: "list-1",
+      id: "list-2",
       title: "title2",
       cardIds: ["card-5", "card-6", "card-7"],
     },
     "list-3": {
-      id: "list-1",
+      id: "list-3",
       title: "title3",
       cardIds: ["card-3", "card-4", "card-5"],
     },
