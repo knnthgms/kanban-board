@@ -8,7 +8,36 @@ function Board() {
   const [state, setState] = React.useState(initialBoardContent);
 
   const onDragEnd = (result) => {
-    // TODO: implement
+    const { destination, source, draggableId } = result;
+    if (!destination) {
+      return;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const list = state.lists[source.droppableId];
+    const newCardIds = Array.from(list.cardIds);
+    newCardIds.splice(source.index, 1);
+    newCardIds.splice(destination.index, 0, draggableId);
+
+    const newList = {
+      ...list,
+      cardIds: newCardIds,
+    };
+
+    const newState = {
+      ...state,
+      lists: {
+        ...state.lists,
+        [newList.id]: newList,
+      },
+    };
+
+    setState(newState);
   };
   return (
     <div className="Board">

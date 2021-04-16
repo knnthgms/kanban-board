@@ -1,14 +1,14 @@
 const initialBoardContent = {
   cards: {
-    "card-1": { id: "01", title: "title", desc: "desc" },
-    "card-2": { id: "02", title: "title", desc: "desc" },
-    "card-3": { id: "03", title: "title", desc: "desc" },
-    "card-4": { id: "04", title: "title", desc: "desc" },
-    "card-5": { id: "05", title: "title", desc: "desc" },
-    "card-6": { id: "06", title: "title", desc: "desc" },
-    "card-7": { id: "07", title: "title", desc: "desc" },
-    "card-8": { id: "08", title: "title", desc: "desc" },
-    "card-9": { id: "09", title: "title", desc: "desc" },
+    "card-1": { id: "card-1", title: "title1", desc: "desc" },
+    "card-2": { id: "card-2", title: "title2", desc: "desc" },
+    "card-3": { id: "card-3", title: "title3", desc: "desc" },
+    "card-4": { id: "card-4", title: "title4", desc: "desc" },
+    "card-5": { id: "card-5", title: "title5", desc: "desc" },
+    "card-6": { id: "card-6", title: "title6", desc: "desc" },
+    "card-7": { id: "card-7", title: "title7", desc: "desc" },
+    "card-8": { id: "card-8", title: "title8", desc: "desc" },
+    "card-9": { id: "card-9", title: "title9", desc: "desc" },
   },
   lists: {
     "list-1": {
