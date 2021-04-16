@@ -15,9 +15,11 @@ function List(props) {
         </svg>
       </div>
       <Droppable droppableId={props.list.id}>
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
-            className="text-sm mt-2"
+            className={`${
+              snapshot.isDraggingOver ? "bg-orange" : ""
+            } text-sm mt-2 `}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
