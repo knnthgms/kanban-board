@@ -1,9 +1,11 @@
-import logo from "./logo.svg";
+import React from "react";
+import initialBoardContent from "./InitialBoardContent";
 import HeaderNav from "./components/HeaderNav";
 import List from "./components/List";
-import Card from "./components/Card";
 
 function Board() {
+  const [state, setState] = React.useState(initialBoardContent);
+
   return (
     <div className="Board">
       <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -32,43 +34,13 @@ function Board() {
             </div>
           </div>
           <div className="flex px-4 pb-8 items-start overflow-auto">
-            <List>
-              <Card>Do a mobile first layout</Card>
-
-              <Card>Check the meta tags</Card>
-
-              <Card>Check the responsive layout on all devices</Card>
-            </List>
-            <List>
-              <Card>Delete all references from the wiki</Card>
-
-              <Card>Remove analytics code</Card>
-
-              <Card>Whatever</Card>
-
-              <Card>Think more tasks for this example</Card>
-            </List>
-            <List>
-              <Card>Delete all references from the wiki</Card>
-
-              <Card>Remove analytics code</Card>
-
-              <Card>Whatever</Card>
-
-              <Card>Delete all references from the wiki</Card>
-
-              <Card>Remove analytics code</Card>
-
-              <Card>Whatever</Card>
-
-              <Card>One more card</Card>
-
-              <Card>Delete all references from the wiki</Card>
-
-              <Card>Remove analytics code</Card>
-
-              <Card>Whatever</Card>
-            </List>
+            {state.listOrder.map((listId) => {
+              const list = state.lists[listId];
+              const cards = list.cardIds.map((cardId) => state.cards[cardId]);
+              return (
+                <List key={list.id} title={list.title} cards={cards}></List>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -1,8 +1,9 @@
+import Card from "./Card";
 function List(props) {
   return (
     <div className="rounded bg-grey-light flex-no-shrink w-64 p-2 mr-3">
       <div className="flex justify-between py-1">
-        <h3 className="text-sm">New landing page</h3>
+        <h3 className="text-sm">{props.title}</h3>
         <svg
           className="h-4 fill-current text-grey-dark cursor-pointer"
           xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +13,9 @@ function List(props) {
         </svg>
       </div>
       <div className="text-sm mt-2">
-        {props.children}
+        {props.cards.map((card) => (
+          <Card key={card.id} title={card.title} desc={card.desc} />
+        ))}
         <div className="inline-flex w-100 justify-between p-2 text-grey-dark rounded mt-1 cursor-pointer hover:bg-grey-lighter">
           <svg
             xmlns="http://www.w3.org/2000/svg"
