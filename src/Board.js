@@ -19,24 +19,54 @@ function Board() {
       return;
     }
 
-    const list = state.lists[source.droppableId];
-    const newCardIds = Array.from(list.cardIds);
-    newCardIds.splice(source.index, 1);
-    newCardIds.splice(destination.index, 0, draggableId);
+    const start = state.lists[source.droppableId];
+    const finish = state.lists[destination.droppableId];
 
-    const newList = {
-      ...list,
-      cardIds: newCardIds,
+    if (start === finish) {
+      const newCardIds = Array.from(start.cardIds);
+      newCardIds.splice(source.index, 1);
+      newCardIds.splice(destination.index, 0, draggableId);
+
+      const newList = {
+        ...start,
+        cardIds: newCardIds,
+      };
+
+      const newState = {
+        ...state,
+        lists: {
+          ...state.lists,
+          [newList.id]: newList,
+        },
+      };
+
+      setState(newState);
+      return;
+    }
+    // Moving between lists
+
+    const startCardIds = Array.from(start.cardIds);
+    startCardIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      cardIds: startCardIds,
+    };
+
+    const finishCardIds = Array.from(finish.cardIds);
+    finishCardIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finish,
+      cardIds: finishCardIds,
     };
 
     const newState = {
       ...state,
       lists: {
         ...state.lists,
-        [newList.id]: newList,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish,
       },
     };
-
     setState(newState);
   };
   return (
