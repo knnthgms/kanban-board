@@ -2,30 +2,36 @@ import logo from "./logo.svg";
 import HeaderNav from "./components/HeaderNav";
 import List from "./components/List";
 import Card from "./components/Card";
-import "./App.css";
 
-function App() {
+function Board() {
   return (
-    <div className="App">
-      <div class="h-screen overflow-hidden flex items-center justify-center">
-        <div class="bg-blue w-full h-screen font-sans">
+    <div className="Board">
+      <div className="h-screen overflow-hidden flex items-center justify-center">
+        <div className="bg-blue w-full h-screen font-sans">
           <HeaderNav />
-          <div class="flex m-4 justify-between">
-            <div class="flex">
-              <h3 class="text-white mr-4">Kanban board</h3>
+          <div className="flex m-4 justify-between">
+            <div className="flex">
+              <h3 className="text-white mr-4">Kanban board</h3>
             </div>
-            <div class="text-white font-sm text-underlined hidden md:flex items-center underline">
+            <div className="text-white font-sm hidden md:flex items-center hover:underline cursor-pointer">
               <svg
-                class="h-4 fill-current text-white cursor-pointer mr-2"
                 xmlns="http://www.w3.org/2000/svg"
+                className="h-4 text-white mr-2"
+                fill="none"
                 viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <path d="M5 10a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
-              Add List
+              <p>Add List</p>
             </div>
           </div>
-          <div class="flex px-4 pb-8 items-start overflow-auto">
+          <div className="flex px-4 pb-8 items-start overflow-auto">
             <List>
               <Card>Do a mobile first layout</Card>
 
@@ -33,7 +39,6 @@ function App() {
 
               <Card>Check the responsive layout on all devices</Card>
             </List>
-
             <List>
               <Card>Delete all references from the wiki</Card>
 
@@ -43,7 +48,6 @@ function App() {
 
               <Card>Think more tasks for this example</Card>
             </List>
-
             <List>
               <Card>Delete all references from the wiki</Card>
 
@@ -72,4 +76,4 @@ function App() {
   );
 }
 
-export default App;
+export default Board;
