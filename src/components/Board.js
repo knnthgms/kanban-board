@@ -1,16 +1,10 @@
 import React from "react";
-import initialBoardContent from "./InitialBoardContent";
+import initialBoardContent from "../data/InitialBoardContent";
 import { DragDropContext } from "react-beautiful-dnd";
-import HeaderNav from "./components/HeaderNav";
-import List from "./components/List";
-Object.size = function (obj) {
-  var size = 0,
-    key;
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) size++;
-  }
-  return size;
-};
+import "../utils/ObjectFunctions";
+import HeaderNav from "./HeaderNav";
+import List from "./List";
+
 class Board extends React.Component {
   constructor(props) {
     super(props);
