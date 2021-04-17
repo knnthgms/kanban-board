@@ -8,11 +8,11 @@ function Card(props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className={`${
-            snapshot.isDragging ? "bg-green" : "bg-white"
+            snapshot.isDragging ? "bg-green-light" : "bg-white"
           } p-2 rounded mt-1 overflow-hidden border-b border-grey text-left cursor-pointer hover:bg-grey-lighter`}
         >
-          <p>{props.data.title}</p>
-          <p>{props.data.desc}</p>
+          <p class="font-medium">{props.data.title}</p>
+          <p class="font-light">{props.data.desc}</p>
         </div>
       )}
     </Draggable>

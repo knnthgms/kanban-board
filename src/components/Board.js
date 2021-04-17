@@ -176,44 +176,19 @@ class Board extends React.Component {
         <div className="h-screen overflow-hidden flex items-center justify-center">
           <div className="bg-blue w-full h-screen font-sans">
             <HeaderNav />
-            <div className="flex m-4 justify-between">
-              <div className="flex">
-                <h3 className="text-white mr-4">Kanban board</h3>
-              </div>
-              <div
-                onClick={() => this.addAction("list")}
-                className="text-white font-sm hidden md:flex items-center hover:underline cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 text-white mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                <p>Add List</p>
-              </div>
-            </div>
             {showModal && (
               <>
-                <div className="absolute w-100 h-screen">
-                  <div className="relative w-auto my-6 mx-auto max-w-sm">
+                <div className="absolute mx-auto left-0 right-0 w-screen">
+                  <div className="w-2/5 m-6">
                     {/*content*/}
                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                       {/*header*/}
                       <div className="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
-                        <h3 className="text-3xl font-semibold">
+                        <h3 className="text-xl font-semibold">
                           {addingNewCard ? "Add Card?" : "Add List?"}
                         </h3>
                         <button
-                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-xl leading-none font-semibold outline-none focus:outline-none"
                           onClick={() => this.setState({ showModal: false })}
                         >
                           <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
@@ -282,9 +257,33 @@ class Board extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
               </>
             )}
+            <div className="flex m-4 justify-between">
+              <div className="flex">
+                <h3 className="text-white mr-4">Kanban board</h3>
+              </div>
+              <div
+                onClick={() => this.addAction("list")}
+                className="text-white font-sm hidden md:flex items-center hover:underline cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 text-white mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <p>Add List</p>
+              </div>
+            </div>
             <div className="flex px-4 pb-8 items-start overflow-auto">
               <DragDropContext onDragEnd={this.onDragEnd}>
                 {boardContent.listOrder.map((listId) => {

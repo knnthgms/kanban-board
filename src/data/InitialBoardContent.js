@@ -1,8 +1,8 @@
 const initialBoardContent = {
   cards: {
-    "card-1": { id: "card-1", title: "title1", desc: "desc" },
-    "card-2": { id: "card-2", title: "title2", desc: "desc" },
-    "card-3": { id: "card-3", title: "title3", desc: "desc" },
+    "card-1": { id: "card-1", title: "Comment system", desc: "desc" },
+    "card-2": { id: "card-2", title: "Accessibility", desc: "desc" },
+    "card-3": { id: "card-3", title: "Component Library", desc: "desc" },
     "card-4": { id: "card-4", title: "title4", desc: "desc" },
     "card-5": { id: "card-5", title: "title5", desc: "desc" },
     "card-6": { id: "card-6", title: "title6", desc: "desc" },

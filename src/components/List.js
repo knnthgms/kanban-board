@@ -13,21 +13,14 @@ function List(props) {
     <div className="rounded bg-grey-light flex-no-shrink w-64 p-2 mr-3">
       <div className="flex justify-between py-1">
         <h3 className="text-sm">{props.list.title}</h3>
-        <svg
-          className="h-4 fill-current text-grey-dark cursor-pointer"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 10a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4z" />
-        </svg>
       </div>
 
       <Droppable droppableId={props.list.id}>
         {(provided, snapshot) => (
           <div
             className={`${
-              snapshot.isDraggingOver ? "bg-orange" : ""
-            } text-sm mt-2 `}
+              snapshot.isDraggingOver ? "bg-blue-light" : ""
+            } text-sm mt-2 rounded p-1`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
