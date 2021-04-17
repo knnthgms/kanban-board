@@ -14,8 +14,14 @@ Object.size = function (obj) {
 class Board extends React.Component {
   constructor(props) {
     super(props);
+    let boardContent = initialBoardContent;
+    if (localStorage.getItem("boardContent")) {
+      const rawLS = localStorage.getItem("boardContent");
+      const parsedLS = JSON.parse(rawLS);
+      boardContent = parsedLS;
+    }
     this.state = {
-      initialBoardContent,
+      boardContent,
       showModal: false,
       addingNewCard: true,
       listTitle: "",
@@ -23,11 +29,15 @@ class Board extends React.Component {
       cardDesc: "",
       activeList: null,
     };
+    localStorage.setItem(
+      "boardContent",
+      JSON.stringify(this.state.boardContent)
+    );
   }
 
   onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    const { initialBoardContent } = this.state;
+    const { boardContent } = this.state;
     if (!destination) {
       return;
     }
@@ -38,8 +48,8 @@ class Board extends React.Component {
       return;
     }
 
-    const start = initialBoardContent.lists[source.droppableId];
-    const finish = initialBoardContent.lists[destination.droppableId];
+    const start = boardContent.lists[source.droppableId];
+    const finish = boardContent.lists[destination.droppableId];
 
     if (start === finish) {
       const newCardIds = Array.from(start.cardIds);
@@ -52,14 +62,18 @@ class Board extends React.Component {
       };
 
       const newState = {
-        ...initialBoardContent,
+        ...boardContent,
         lists: {
-          ...initialBoardContent.lists,
+          ...boardContent.lists,
           [newList.id]: newList,
         },
       };
 
-      this.setState({ initialBoardContent: newState });
+      this.setState({ boardContent: newState });
+      localStorage.setItem(
+        "boardContent",
+        JSON.stringify(this.state.boardContent)
+      );
       return;
     }
     // Moving between lists
@@ -79,21 +93,25 @@ class Board extends React.Component {
     };
 
     const newState = {
-      ...initialBoardContent,
+      ...boardContent,
       lists: {
-        ...initialBoardContent.lists,
+        ...boardContent.lists,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
       },
     };
-    this.setState({ initialBoardContent: newState });
+    this.setState({ boardContent: newState });
+    localStorage.setItem(
+      "boardContent",
+      JSON.stringify(this.state.boardContent)
+    );
   };
 
   addList = () => {
     this.setState({ showModal: false });
 
-    const { lists, listOrder } = this.state.initialBoardContent;
-    const { listTitle } = this.state;
+    const { lists, listOrder } = this.state.boardContent;
+    const { listTitle, boardContent } = this.state;
     const newListId = `list-${Object.size(lists) + 1}`;
 
     lists[newListId] = {
@@ -102,17 +120,21 @@ class Board extends React.Component {
       cardIds: [],
     };
     listOrder.push(newListId);
-    const boardContent = {
-      ...initialBoardContent,
+    const newBoardContent = {
+      ...boardContent,
       lists,
       listOrder,
     };
-    this.setState({ initialBoardContent: boardContent, showModal: false });
+    this.setState({ boardContent: newBoardContent, showModal: false });
+    localStorage.setItem(
+      "boardContent",
+      JSON.stringify(this.state.boardContent)
+    );
   };
 
   addCard = () => {
-    const { cards, lists } = this.state.initialBoardContent;
-    const { cardTitle, cardDesc, activeList } = this.state;
+    const { cards, lists } = this.state.boardContent;
+    const { cardTitle, cardDesc, activeList, boardContent } = this.state;
     const newCardId = `card=${Object.size(cards) + 1}`;
     cards[newCardId] = {
       id: newCardId,
@@ -121,13 +143,17 @@ class Board extends React.Component {
     };
     lists[activeList].cardIds.push(newCardId);
     this.setState({
-      initialBoardContent: {
-        ...initialBoardContent,
+      boardContent: {
+        ...boardContent,
         cards,
         lists,
       },
       showModal: false,
     });
+    localStorage.setItem(
+      "boardContent",
+      JSON.stringify(this.state.boardContent)
+    );
   };
 
   addAction = (type, activeList) => {
@@ -150,7 +176,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const { addingNewCard, showModal } = this.state;
+    const { addingNewCard, showModal, boardContent } = this.state;
     return (
       <div className="Board">
         <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -267,10 +293,10 @@ class Board extends React.Component {
             )}
             <div className="flex px-4 pb-8 items-start overflow-auto">
               <DragDropContext onDragEnd={this.onDragEnd}>
-                {this.state.initialBoardContent.listOrder.map((listId) => {
-                  const list = this.state.initialBoardContent.lists[listId];
+                {boardContent.listOrder.map((listId) => {
+                  const list = boardContent.lists[listId];
                   const cards = list.cardIds.map(
-                    (cardId) => this.state.initialBoardContent.cards[cardId]
+                    (cardId) => boardContent.cards[cardId]
                   );
                   return (
                     <List
