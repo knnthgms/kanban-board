@@ -37,7 +37,10 @@ function List(props) {
         )}
       </Droppable>
 
-      <div className=" text-sm inline-flex w-100 justify-between p-2 text-grey-dark rounded mt-1 cursor-pointer hover:bg-grey-lighter">
+      <button
+        onClick={() => props.addAction("card", props.list.id)}
+        className=" text-sm inline-flex w-100 justify-between p-2 text-grey-dark rounded mt-1 cursor-pointer hover:bg-grey-lighter"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-4 cursor-pointer"
@@ -53,7 +56,7 @@ function List(props) {
           />
         </svg>
         <p>Add a card...</p>
-      </div>
+      </button>
     </div>
   );
 }

@@ -3,15 +3,31 @@ import initialBoardContent from "./InitialBoardContent";
 import { DragDropContext } from "react-beautiful-dnd";
 import HeaderNav from "./components/HeaderNav";
 import List from "./components/List";
-
+Object.size = function (obj) {
+  var size = 0,
+    key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) size++;
+  }
+  return size;
+};
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialBoardContent;
+    this.state = {
+      initialBoardContent,
+      showModal: false,
+      addingNewCard: true,
+      listTitle: "",
+      cardTitle: "",
+      cardDesc: "",
+      activeList: null,
+    };
   }
+
   onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    const { state } = this;
+    const { initialBoardContent } = this.state;
     if (!destination) {
       return;
     }
@@ -22,8 +38,8 @@ class Board extends React.Component {
       return;
     }
 
-    const start = state.lists[source.droppableId];
-    const finish = state.lists[destination.droppableId];
+    const start = initialBoardContent.lists[source.droppableId];
+    const finish = initialBoardContent.lists[destination.droppableId];
 
     if (start === finish) {
       const newCardIds = Array.from(start.cardIds);
@@ -36,14 +52,14 @@ class Board extends React.Component {
       };
 
       const newState = {
-        ...state,
+        ...initialBoardContent,
         lists: {
-          ...state.lists,
+          ...initialBoardContent.lists,
           [newList.id]: newList,
         },
       };
 
-      this.setState(newState);
+      this.setState({ initialBoardContent: newState });
       return;
     }
     // Moving between lists
@@ -63,17 +79,78 @@ class Board extends React.Component {
     };
 
     const newState = {
-      ...state,
+      ...initialBoardContent,
       lists: {
-        ...state.lists,
+        ...initialBoardContent.lists,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
       },
     };
-    this.setState(newState);
+    this.setState({ initialBoardContent: newState });
   };
 
+  addList = () => {
+    this.setState({ showModal: false });
+
+    const { lists, listOrder } = this.state.initialBoardContent;
+    const { listTitle } = this.state;
+    const newListId = `list-${Object.size(lists) + 1}`;
+
+    lists[newListId] = {
+      id: newListId,
+      title: listTitle,
+      cardIds: [],
+    };
+    listOrder.push(newListId);
+    const boardContent = {
+      ...initialBoardContent,
+      lists,
+      listOrder,
+    };
+    this.setState({ initialBoardContent: boardContent, showModal: false });
+  };
+
+  addCard = () => {
+    const { cards, lists } = this.state.initialBoardContent;
+    const { cardTitle, cardDesc, activeList } = this.state;
+    const newCardId = `card=${Object.size(cards) + 1}`;
+    cards[newCardId] = {
+      id: newCardId,
+      title: cardTitle,
+      desc: cardDesc,
+    };
+    lists[activeList].cardIds.push(newCardId);
+    this.setState({
+      initialBoardContent: {
+        ...initialBoardContent,
+        cards,
+        lists,
+      },
+      showModal: false,
+    });
+  };
+
+  addAction = (type, activeList) => {
+    if (type === "list")
+      this.setState({
+        showModal: true,
+        addingNewCard: false,
+      });
+    else this.setState({ showModal: true, activeList, addingNewCard: true });
+  };
+
+  handleCardTitle(e) {
+    this.setState({ cardTitle: e.target.value });
+  }
+  handleListTitle(e) {
+    this.setState({ listTitle: e.target.value });
+  }
+  handleCardDesc(e) {
+    this.setState({ cardDesc: e.target.value });
+  }
+
   render() {
+    const { addingNewCard, showModal } = this.state;
     return (
       <div className="Board">
         <div className="h-screen overflow-hidden flex items-center justify-center">
@@ -83,7 +160,10 @@ class Board extends React.Component {
               <div className="flex">
                 <h3 className="text-white mr-4">Kanban board</h3>
               </div>
-              <div className="text-white font-sm hidden md:flex items-center hover:underline cursor-pointer">
+              <div
+                onClick={() => this.addAction("list")}
+                className="text-white font-sm hidden md:flex items-center hover:underline cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 text-white mr-2"
@@ -101,14 +181,105 @@ class Board extends React.Component {
                 <p>Add List</p>
               </div>
             </div>
+            {showModal && (
+              <>
+                <div className="absolute w-100 h-screen">
+                  <div className="relative w-auto my-6 mx-auto max-w-sm">
+                    {/*content*/}
+                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                      {/*header*/}
+                      <div className="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
+                        <h3 className="text-3xl font-semibold">
+                          {addingNewCard ? "Add Card?" : "Add List?"}
+                        </h3>
+                        <button
+                          className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                          onClick={() => this.setState({ showModal: false })}
+                        >
+                          <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                            ×
+                          </span>
+                        </button>
+                      </div>
+                      {/*body*/}
+                      <div className="relative p-4 flex-auto">
+                        <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
+                          {addingNewCard
+                            ? "Enter new card details?"
+                            : "Enter name of new list"}
+                        </p>
+                        <div className="mb-3 pt-0">
+                          <input
+                            type="text"
+                            placeholder="Name"
+                            value={
+                              addingNewCard
+                                ? this.state.cardTitle
+                                : this.state.listTitle
+                            }
+                            onChange={
+                              addingNewCard
+                                ? (e) => this.handleCardTitle(e)
+                                : (e) => this.handleListTitle(e)
+                            }
+                            className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:ring w-full"
+                          />
+                        </div>
+                        {addingNewCard && (
+                          <div className="mb-3 pt-0">
+                            <input
+                              type="text"
+                              placeholder="Description (optional)"
+                              value={this.state.cardDesc}
+                              onChange={(e) => this.handleCardDesc(e)}
+                              className="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:ring w-full"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/*footer*/}
+                      <div className="flex items-center justify-end p-4 border-t border-solid border-blueGray-200 rounded-b">
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => this.setState({ showModal: false })}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="bg-blue text-white font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={
+                            addingNewCard
+                              ? () => this.addCard()
+                              : () => this.addList()
+                          }
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+              </>
+            )}
             <div className="flex px-4 pb-8 items-start overflow-auto">
               <DragDropContext onDragEnd={this.onDragEnd}>
-                {this.state.listOrder.map((listId) => {
-                  const list = this.state.lists[listId];
+                {this.state.initialBoardContent.listOrder.map((listId) => {
+                  const list = this.state.initialBoardContent.lists[listId];
                   const cards = list.cardIds.map(
-                    (cardId) => this.state.cards[cardId]
+                    (cardId) => this.state.initialBoardContent.cards[cardId]
                   );
-                  return <List key={list.id} list={list} cards={cards}></List>;
+                  return (
+                    <List
+                      key={list.id}
+                      list={list}
+                      cards={cards}
+                      addAction={this.addAction.bind(this)}
+                    ></List>
+                  );
                 })}
               </DragDropContext>
             </div>
