@@ -4,6 +4,7 @@ Simple trello-style kanban board with card drag-and-drop functionality
 Implemented using `react-beautiful-dnd` & TailwindCSS
 Compatible with touch devices and keyboard shortcuts
 Persists using localstorage
+[Demo](https://jolly-shirley-987119.netlify.app/)
 
 ### Usage
 
